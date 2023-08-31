@@ -11,7 +11,75 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  username String @unique
-  email    String @unique
+  user_id           Int           @id @default(autoincrement())
+  username          String
+  email             String
+  password          String?
+  registration_date DateTime      @default(now())
+  last_login_date   DateTime      @default(now())
+  transactions      Transaction[]
+  goals             Goal[]
+}
+
+model Transaction {
+  transaction_id   Int      @id @default(autoincrement())
+  user_id          Int
+  transaction_date DateTime
+  amount           Decimal
+  category_id      Int
+  description      String?
+  frequency_id     Int
+  creation_date    DateTime @default(now())
+
+  user                  User                    @relation(fields: [user_id], references: [user_id])
+  category              Category                @relation(fields: [category_id], references: [category_id])
+  frequency             Frequency               @relation(fields: [frequency_id], references: [frequency_id])
+  Transaction_Frequency Transaction_Frequency[]
+  Transaction_Category  Transaction_Category[]
+}
+
+model Category {
+  category_id          Int                    @id @default(autoincrement())
+  category_name        String
+  type                 String
+  creation_date        DateTime               @default(now())
+  transactions         Transaction[]
+  Transaction_Category Transaction_Category[]
+}
+
+model Frequency {
+  frequency_id          Int                     @id @default(autoincrement())
+  frequency_name        String
+  creation_date         DateTime                @default(now())
+  transactions          Transaction[]
+  Transaction_Frequency Transaction_Frequency[]
+}
+
+model Goal {
+  goal_id       Int      @id @default(autoincrement())
+  user_id       Int
+  goal_amount   Decimal
+  target_date   DateTime @default(now())
+  description   String?
+  creation_date DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [user_id])
+}
+
+model Transaction_Frequency {
+  transaction_frequency_id Int @id @default(autoincrement())
+  transaction_id           Int
+  frequency_id             Int
+
+  transaction Transaction @relation(fields: [transaction_id], references: [transaction_id])
+  frequency   Frequency   @relation(fields: [frequency_id], references: [frequency_id])
+}
+
+model Transaction_Category {
+  transaction_category_id Int @id @default(autoincrement())
+  transaction_id          Int
+  category_id             Int
+
+  transaction Transaction @relation(fields: [transaction_id], references: [transaction_id])
+  category    Category    @relation(fields: [category_id], references: [category_id])
 }
