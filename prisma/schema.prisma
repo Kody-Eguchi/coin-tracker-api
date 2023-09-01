@@ -14,7 +14,7 @@ model User {
   user_id           Int           @id @default(autoincrement())
   username          String
   email             String
-  password          String?
+  password          String
   registration_date DateTime      @default(now())
   last_login_date   DateTime      @default(now())
   transactions      Transaction[]
