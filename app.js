@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 4000;
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 //IMPORT PRISMA
 const { PrismaClient } = require("@prisma/client");
@@ -18,12 +19,20 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders:
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  maxAge: 3600, // 1 hour (in seconds)
 };
 
 //MIDDLEWARE
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 const users = require("./routes/users");
 const login = require("./routes/login");

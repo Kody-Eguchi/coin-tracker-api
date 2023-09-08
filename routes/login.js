@@ -21,6 +21,15 @@ module.exports = (prisma) => {
       const token = jwt.sign({ userId: user.id }, "your-secret-key", {
         expiresIn: "1h", // Token expiration time
       });
+
+      //SET THE TOKEN AS AN HTTP ONLY COOKIE
+      res.cookie("token", token, {
+        // httpOnly: true,
+        // domain: "http://localhost:3000",
+        // secure: true,
+        // sameSite: "None",
+      });
+
       console.log(token, "🔑");
       // Respond with the token
       res.status(200).json({ token });
