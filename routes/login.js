@@ -28,6 +28,8 @@ module.exports = (prisma) => {
         // domain: "http://localhost:3000",
         // secure: true,
         // sameSite: "None",
+        domain: "localhost",
+        path: "/",
       });
 
       console.log(token, "🔑");
