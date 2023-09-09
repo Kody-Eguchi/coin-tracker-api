@@ -36,6 +36,7 @@ app.use(cookieParser());
 
 const users = require("./routes/users");
 const login = require("./routes/login");
+const profile = require("./routes/userProfile");
 
 app.get("/", (req, res) => {
   res.send("it works");
@@ -43,6 +44,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", users(prisma));
 app.use("/api/login", login(prisma));
+app.use("/api/profile", profile(prisma));
 
 app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);

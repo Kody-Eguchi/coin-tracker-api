@@ -1,11 +1,11 @@
 ###
-GET http://localhost:3000/api/users
+GET http://localhost:4000/api/users
 
 ###
-GET http://localhost:3000/api/users/1
+GET http://localhost:4000/api/users/1
 
 ###
-POST http://localhost:3000/api/users
+POST http://localhost:4000/api/users
 Content-Type: application/json
 
 {
@@ -15,13 +15,14 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/api/users/2
+DELETE http://localhost:4000/api/users/2
 
 ###
-PUT http://localhost:3000/api/users/4
+PUT http://localhost:4000/api/users/4
 Content-Type: application/json
 
 {
   "username": "Jake",
   "email": "jake@example.com"
 }
+
