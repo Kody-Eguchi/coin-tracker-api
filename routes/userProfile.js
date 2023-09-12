@@ -8,7 +8,7 @@ module.exports = (prisma) => {
 
   router.get("/", async (req, res) => {
     // Get the JWT token from the request headers
-    const token = req.headers.authorization?.split(" ")[1]; // Assuming the token is in the format "Bearer <token>"
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json({ error: "Missing token" });
     }
