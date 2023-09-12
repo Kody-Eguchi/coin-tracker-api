@@ -38,7 +38,20 @@ module.exports = (prisma) => {
         // QUERY THE DATABASE WITH USERID
         const transactionHistory = await prisma.transaction.findFirst({
           where: {
-            id: userId,
+            user_id: userId,
+          },
+          include: {
+            category: {
+              select: {
+                category_name: true,
+                type: true,
+              },
+            },
+            frequency: {
+              select: {
+                frequency_name: true,
+              },
+            },
           },
         });
 
