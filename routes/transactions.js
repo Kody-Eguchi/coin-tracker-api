@@ -66,7 +66,55 @@ module.exports = (prisma) => {
 
   // READ TRANSACTIONS BY CREATION_DATE
 
-  // READ TRANSACTIONS BY
+  // CREATE A NEW TRANSACTION
+  router.post("/create", async (req, res) => {
+    //GET THE JWT TOKEN FROM THE REQUEST HEADERS
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ error: "Missing token" });
+    }
+
+    //VERIFY AND DECODE THE TOKEN
+    jwt.verify(token, secretKey, async (err, decoded) => {
+      if (err) {
+        // VERIFICATION ERROR HANDLING
+        return res.status(401).json({ error: "Invalid token" });
+      }
+
+      // EXTRACT THE USERID FROM THE DECODED TOKEN
+      const userId = decoded.userId;
+      console.log(userId, "🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑");
+      try {
+        const newTransaction = await prisma.transaction.create({
+          data: {
+            user: {
+              connect: {
+                user_id: userId,
+              },
+            },
+            transaction_date: new Date(),
+            amount: req.body.amount,
+            description: req.body.description,
+            category: {
+              connect: {
+                category_id: req.body.categoryId,
+              },
+            },
+            frequency: {
+              connect: {
+                frequency_id: req.body.frequencyId,
+              },
+            },
+          },
+        });
+
+        res.status(201).json(newTransaction);
+      } catch (error) {
+        console.error("Error creating transaction:", error);
+        res.status(500).json({ error: "Server error" });
+      }
+    });
+  });
 
   return router;
 };

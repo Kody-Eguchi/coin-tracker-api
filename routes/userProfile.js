@@ -27,7 +27,7 @@ module.exports = (prisma) => {
         // Query your database using Prisma to fetch the user's information based on userId
         const user = await prisma.user.findFirst({
           where: {
-            id: userId,
+            user_id: userId,
           },
         });
 

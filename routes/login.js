@@ -13,12 +13,12 @@ module.exports = (prisma) => {
           email,
         },
       });
-      console.log(user, "🚨");
+
       // if (!user || !(await bcrypt.compare(password, user.password))) {
       //   return res.status(401).json({ error: "Invalid credentials" });
       // }
 
-      const token = jwt.sign({ userId: user.id }, "your-secret-key", {
+      const token = jwt.sign({ userId: user.user_id }, "your-secret-key", {
         expiresIn: "1h", // Token expiration time
       });
 
@@ -32,7 +32,6 @@ module.exports = (prisma) => {
         path: "/",
       });
 
-      console.log(token, "🔑");
       // Respond with the token
       res.status(200).json({ token });
     } catch (error) {
