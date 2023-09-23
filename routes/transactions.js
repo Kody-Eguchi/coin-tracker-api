@@ -36,7 +36,7 @@ module.exports = (prisma) => {
 
       try {
         // QUERY THE DATABASE WITH USERID
-        const transactionHistory = await prisma.transaction.findFirst({
+        const transactionHistory = await prisma.transaction.findMany({
           where: {
             user_id: userId,
           },
@@ -83,7 +83,6 @@ module.exports = (prisma) => {
 
       // EXTRACT THE USERID FROM THE DECODED TOKEN
       const userId = decoded.userId;
-      console.log(userId, "🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑🔑");
       try {
         const newTransaction = await prisma.transaction.create({
           data: {
@@ -97,12 +96,12 @@ module.exports = (prisma) => {
             description: req.body.description,
             category: {
               connect: {
-                category_id: req.body.categoryId,
+                category_id: parseInt(req.body.categoryId),
               },
             },
             frequency: {
               connect: {
-                frequency_id: req.body.frequencyId,
+                frequency_id: parseInt(req.body.frequencyId),
               },
             },
           },
@@ -112,6 +111,50 @@ module.exports = (prisma) => {
       } catch (error) {
         console.error("Error creating transaction:", error);
         res.status(500).json({ error: "Server error" });
+      }
+    });
+  });
+
+  //DELETE A TRANSACTION BY ID
+  router.delete("/delete", async (req, res) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ error: "Missing token" });
+    }
+
+    //VERIFY AND DECODE THE TOKEN
+    jwt.verify(token, secretKey, async (err, decoded) => {
+      if (err) {
+        // VERIFICATION ERROR HANDLING
+        return res.status(401).json({ error: "Invalid token" });
+      }
+
+      // EXTRACT THE USERID FROM THE DECODED TOKEN
+      const userId = decoded.userId;
+
+      try {
+        const { transaction_id } = req.body;
+
+        const targetTransaction = await prisma.transaction.findUnique({
+          where: {
+            transaction_id: transaction_id,
+            user_id: userId,
+          },
+        });
+
+        if (!targetTransaction) {
+          return res.status(404).json({ message: "Transaction not found" });
+        }
+
+        await prisma.transaction.delete({
+          where: {
+            transaction_id: transaction_id,
+            user_id: userId,
+          },
+        });
+      } catch (error) {
+        console.error("Error deleting transaction:", error);
+        res.status(500).json({ message: "Internal server error" });
       }
     });
   });

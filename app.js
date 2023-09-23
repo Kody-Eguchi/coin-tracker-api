@@ -38,6 +38,7 @@ const users = require("./routes/users");
 const login = require("./routes/login");
 const profile = require("./routes/userProfile");
 const transactions = require("./routes/transactions");
+const goal = require("./routes/goal");
 
 app.get("/", (req, res) => {
   res.send("it works");
@@ -47,6 +48,7 @@ app.use("/api/users", users(prisma));
 app.use("/api/login", login(prisma));
 app.use("/api/profile", profile(prisma));
 app.use("/api/transactions", transactions(prisma));
+app.use("/api/goal", goal(prisma));
 
 app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);
