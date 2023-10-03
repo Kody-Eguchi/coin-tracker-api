@@ -107,10 +107,12 @@ module.exports = (prisma) => {
 
         await prisma.goal.delete({
           where: {
-            transaction_id: transaction_id,
+            goal_id: goal_id,
             user_id: userId,
           },
         });
+
+        res.status(200).json({ message: "Goal is deleted successfully!" });
       } catch (error) {
         console.error("Error deleting goal:", error);
         res.status(500).json({ message: "Internal server error" });
