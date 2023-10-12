@@ -50,7 +50,7 @@ app.use("/api/login", login(prisma));
 app.use("/api/profile", profile(prisma));
 app.use("/api/transactions", transactions(prisma));
 app.use("/api/goal", goal(prisma));
-app.use("/apo/signup", signup(prisma));
+app.use("/api/signup", signup(prisma));
 
 app.listen(PORT, () => {
   console.log(`Listening to port ${PORT}`);
