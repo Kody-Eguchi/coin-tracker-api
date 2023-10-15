@@ -11,6 +11,14 @@ const prisma = new PrismaClient();
 
 async function seedDatabase() {
   console.log("Clearing existing data...");
+  await prisma.$executeRaw`ALTER SEQUENCE "User_user_id_seq" RESTART WITH 1`;
+  await prisma.$executeRaw`ALTER SEQUENCE "User_user_id_seq" RESTART WITH 1`;
+  await prisma.$executeRaw`ALTER SEQUENCE "Transaction_transaction_id_seq" RESTART WITH 1`;
+  await prisma.$executeRaw`ALTER SEQUENCE "Category_category_id_seq" RESTART WITH 1`;
+  await prisma.$executeRaw`ALTER SEQUENCE "Frequency_frequency_id_seq" RESTART WITH 1`;
+  await prisma.$executeRaw`ALTER SEQUENCE "Goal_goal_id_seq" RESTART WITH 1`;
+  await prisma.$executeRaw`ALTER SEQUENCE "Transaction_Frequency_transaction_frequency_id_seq" RESTART WITH 1`;
+  await prisma.$executeRaw`ALTER SEQUENCE "Transaction_Category_transaction_category_id_seq" RESTART WITH 1`;
   await prisma.transaction_Frequency.deleteMany();
   await prisma.transaction_Category.deleteMany();
   await prisma.goal.deleteMany();
