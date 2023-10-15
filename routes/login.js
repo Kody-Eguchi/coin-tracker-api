@@ -14,9 +14,9 @@ module.exports = (prisma) => {
         },
       });
 
-      // if (!user || !(await bcrypt.compare(password, user.password))) {
-      //   return res.status(401).json({ error: "Invalid credentials" });
-      // }
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return res.status(401).json({ error: "Invalid credentials" });
+      }
 
       const token = jwt.sign({ userId: user.user_id }, "your-secret-key", {
         expiresIn: "1h", // Token expiration time
