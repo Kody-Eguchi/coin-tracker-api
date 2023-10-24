@@ -152,6 +152,8 @@ module.exports = (prisma) => {
             user_id: userId,
           },
         });
+
+        res.status(201).json({ message: "Transaction deleted successfully" });
       } catch (error) {
         console.error("Error deleting transaction:", error);
         res.status(500).json({ message: "Internal server error" });
